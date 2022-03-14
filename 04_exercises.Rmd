@@ -443,7 +443,7 @@ mpls_suspicious <- MplsStops %>%
   15. Use a `leaflet` map and the `MplsStops` dataset to display each of the stops on a map as a small point. Color the points differently depending on whether they were for suspicious vehicle/person or a traffic stop (the `problem` variable). HINTS: use `addCircleMarkers`, set `stroke = FAlSE`, use `colorFactor()` to create a palette.  
   
 ```{r}
-leaflet(data = MplsStops)
+leaflet()
 ```
   
   

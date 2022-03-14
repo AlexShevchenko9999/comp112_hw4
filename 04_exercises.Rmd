@@ -215,7 +215,7 @@ starbucks_with_2018_pop_est <-
             by = c("state_name" = "state")) %>% 
   mutate(starbucks_per_10000 = (n/est_pop_2018)*10000)
 
-starbucks_with_2018_pop_est
+
 ```
 
   6. **`dplyr` review**: Look through the code above and describe what each line of code does.
@@ -476,11 +476,6 @@ mpls_all <-mpls_nbhd %>%
   left_join(MplsDemo ,
             by = c("BDNAME" =  "neighborhood"))
 
-
-mpls_all
-
-
-
 ```
 
   17. Use `leaflet` to create a map from the `mpls_all` data  that colors the neighborhoods by `prop_suspicious`. Display the neighborhood name as you scroll over it. Describe what you observe in the map.
@@ -518,6 +513,42 @@ leaflet(data = mpls_all) %>%
   
   18. Use `leaflet` to create a map of your own choosing. Come up with a question you want to try to answer and use the map to help answer that question. Describe what your map shows. 
   
+```{r}
+
+mpls_all_1 <- mpls_all %>%
+  mutate(stops_prop = stop_count_tot/population)
+
+
+
+
+pal <- colorNumeric("YlOrRd", 
+                     domain = mpls_all_1$stops_prop) 
+
+
+leaflet(data = mpls_all_1) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~pal(stops_prop),
+    fillOpacity = .6,
+    highlight = highlightOptions(weight = 5, 
+                                 color = "black",
+                                 fillOpacity = 0.9,
+                                 bringToFront = FALSE
+                                 ),
+    label = mpls_all$BDNAME,
+    labelOptions = labelOptions(
+    style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px",
+    direction = "auto") 
+  ) %>%
+  addLegend(pal = pal, 
+            values = ~stops_prop, 
+            opacity = 0.5, 
+            title = NULL,
+            position = "bottomright")
+```
+  
+  This map shows us the stop count of each neighborhood in proportion to its population. As you can see, for the most part, the stops are equally spread out, except for a few edge cases. 
   
   
   
